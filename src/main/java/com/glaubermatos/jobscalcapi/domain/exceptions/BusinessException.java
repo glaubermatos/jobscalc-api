@@ -1,10 +1,11 @@
 package com.glaubermatos.jobscalcapi.domain.exceptions;
 
-public class EntityNotFoundException extends BusinessException {
+public class BusinessException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-
-	public EntityNotFoundException(String message) {
+	
+	public BusinessException(String message) {
 		super(message);
 	}
+
 }
