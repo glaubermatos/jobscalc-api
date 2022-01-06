@@ -1,8 +1,11 @@
 package com.glaubermatos.jobscalcapi.api.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,5 +44,11 @@ public class JobsController {
 		newJob.setProfile(profile);
 		
 		return jobAssembler.toModel(registerJobService.save(newJob));
+	}
+	
+	@GetMapping
+	public List<JobModel> index(@PathVariable Long profileId) {
+		Profile profile = registerProfileService.findByIdOrError(profileId);
+		return jobAssembler.toCollectionModel(profile.getJobs());
 	}
 }

@@ -1,9 +1,13 @@
 package com.glaubermatos.jobscalcapi.domain.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -23,6 +27,9 @@ public class Profile {
 	private Integer vacationWeekPerYear;
 	private Integer valueHour;
 	
+	@OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+	private List<Job> jobs;
+	 
 	public Long getId() {
 		return id;
 	}
@@ -76,5 +83,11 @@ public class Profile {
 	}
 	public void setValueHour(Integer valueHour) {
 		this.valueHour = valueHour;
+	}
+	public List<Job> getJobs() {
+		return jobs;
+	}
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
 	}
 }
