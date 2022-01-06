@@ -1,6 +1,7 @@
 package com.glaubermatos.jobscalcapi.domain.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -89,5 +90,20 @@ public class Profile {
 	}
 	public void setJobs(List<Job> jobs) {
 		this.jobs = jobs;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Profile other = (Profile) obj;
+		return Objects.equals(id, other.id);
 	}
 }
