@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,6 +28,9 @@ import com.glaubermatos.jobscalcapi.domain.service.RegisterProfileService;
 @RestController
 @RequestMapping("/api/profile/{profileId}/jobs")
 public class JobsController {
+	
+	@Autowired
+	private JobDisassembler jobDisassembler;
 	
 	@Autowired
 	private JobAssembler jobAssembler;
@@ -66,5 +70,15 @@ public class JobsController {
 		return jobAssembler
 				.toModel(registerJobService
 						.findByIdOrError(profileId, jobId));
+	}
+	
+	@PutMapping("/{jobId}")
+	@ResponseStatus(HttpStatus.OK)
+	public JobModel update(@PathVariable Long profileId, @PathVariable Long jobId, @RequestBody JobInput jobInput) {
+		Job jobToUpdate = registerJobService.findByIdOrError(profileId, jobId);
+		
+		jobDisassembler.copyToDomainObject(jobInput, jobToUpdate);
+		
+		return jobAssembler.toModel(registerJobService.save(jobToUpdate));
 	}
 }
