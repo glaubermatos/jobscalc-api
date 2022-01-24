@@ -97,6 +97,18 @@ public class Job {
 		this.profile = profile;
 	}
 
+	public void changeStatusToInProgress() {
+		if (status.equals(JobStatus.NOTSTARTED)) {
+			setStatus(JobStatus.INPROGRESS);
+		}
+	}
+	
+	public void changeStatusToClosed() {
+		if (status.equals(JobStatus.INPROGRESS)) {
+			setStatus(JobStatus.CLOSED);
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

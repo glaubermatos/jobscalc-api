@@ -88,4 +88,18 @@ public class JobsController {
 		}
 		
 	}
+	
+	@PutMapping("/{jobId}/inprogress")
+	@ResponseStatus(HttpStatus.OK)
+	public void inProgress(@PathVariable Long profileId, @PathVariable Long jobId) {
+		Job job = registerJobService.findByIdOrError(profileId, jobId);
+		registerJobService.changeStatusJobToInProgress(job);
+	}
+	
+	@PutMapping("/{jobId}/closed")
+	@ResponseStatus(HttpStatus.OK)
+	public void closed(@PathVariable Long profileId, @PathVariable Long jobId) {
+		Job job = registerJobService.findByIdOrError(profileId, jobId);
+		registerJobService.changeStatusJobToClosed(job);
+	}
 }

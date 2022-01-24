@@ -1,14 +1,8 @@
 package com.glaubermatos.jobscalcapi.domain.service;
 
-import java.sql.SQLException;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.glaubermatos.jobscalcapi.domain.exceptions.EntityNotFoundException;
@@ -78,5 +72,15 @@ public class RegisterJobService {
 	
 	private Boolean canDeleteJob(Long id) {
 		return jobRepository.existsById(id);
+	}
+
+	@Transactional
+	public void changeStatusJobToInProgress(Job job) {
+		job.changeStatusToInProgress();
+	}
+
+	@Transactional
+	public void changeStatusJobToClosed(Job job) {
+		job.changeStatusToClosed();
 	}
 }
