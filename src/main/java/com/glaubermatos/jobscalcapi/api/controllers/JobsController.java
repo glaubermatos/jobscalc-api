@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import com.glaubermatos.jobscalcapi.api.assembler.JobAssembler;
 import com.glaubermatos.jobscalcapi.api.assembler.JobDisassembler;
 import com.glaubermatos.jobscalcapi.api.domain.model.JobModel;
 import com.glaubermatos.jobscalcapi.api.domain.model.input.JobInput;
+import com.glaubermatos.jobscalcapi.domain.exceptions.JobNameAlreadyRegisteredException;
 import com.glaubermatos.jobscalcapi.domain.model.Job;
 import com.glaubermatos.jobscalcapi.domain.model.Profile;
 import com.glaubermatos.jobscalcapi.domain.service.RegisterJobService;
@@ -50,7 +52,7 @@ public class JobsController {
 		Job newJob = jobDisssember.toDomainModel(input);
 		newJob.setProfile(profile);
 		
-		return jobAssembler.toModel(registerJobService.save(newJob));
+		return jobAssembler.toModel(registerJobService.save(newJob, profileId));
 	}
 	
 	@GetMapping
@@ -77,8 +79,13 @@ public class JobsController {
 	public JobModel update(@PathVariable Long profileId, @PathVariable Long jobId, @RequestBody JobInput jobInput) {
 		Job jobToUpdate = registerJobService.findByIdOrError(profileId, jobId);
 		
-		jobDisassembler.copyToDomainObject(jobInput, jobToUpdate);
+		try {
+			jobDisassembler.copyToDomainObject(jobInput, jobToUpdate);
+			return jobAssembler.toModel(registerJobService.save(jobToUpdate, profileId));
+		} catch (DataIntegrityViolationException e) {
+			throw new JobNameAlreadyRegisteredException(String
+					.format("Já existe um Job %s", jobInput.getName()));
+		}
 		
-		return jobAssembler.toModel(registerJobService.save(jobToUpdate));
 	}
 }

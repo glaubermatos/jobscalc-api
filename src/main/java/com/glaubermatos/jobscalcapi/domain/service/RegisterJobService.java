@@ -1,11 +1,18 @@
 package com.glaubermatos.jobscalcapi.domain.service;
 
+import java.sql.SQLException;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.glaubermatos.jobscalcapi.domain.exceptions.EntityNotFoundException;
+import com.glaubermatos.jobscalcapi.domain.exceptions.JobNameAlreadyRegisteredException;
 import com.glaubermatos.jobscalcapi.domain.model.Job;
 import com.glaubermatos.jobscalcapi.domain.model.Profile;
 import com.glaubermatos.jobscalcapi.domain.repository.JobsRepository;
@@ -20,12 +27,15 @@ public class RegisterJobService {
 	private JobsRepository jobRepository;
 
 	@Transactional
-	public Job save(Job job) {
-//		Boolean jobNameExists = jobRepository.findByName(job.getName()).isPresent();
-//		
-//		if (jobNameExists) {
-//			throw new JobNameAlreadyRegisteredException("Já existe um regstro de Job com o nome informado");
-//		}
+	public Job save(Job job, Long profileId) {
+		if (job.getId() == null) { 
+			Boolean jobNameAlreadyExists = jobRepository.findByNameAndProfileId(job.getName(), profileId).isPresent();
+			
+			if (jobNameAlreadyExists) {
+				throw new JobNameAlreadyRegisteredException(String
+						.format("Já existe um Job %s", job.getName()));
+			} 
+		}
 		
 		return jobRepository.save(job);
 	}

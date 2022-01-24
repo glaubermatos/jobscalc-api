@@ -3,6 +3,7 @@ package com.glaubermatos.jobscalcapi.domain.model;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,6 +22,7 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(unique = true)
 	private String name;	
 	private Integer workingHoursPerDay;	
 	private Integer hoursEstimate;	

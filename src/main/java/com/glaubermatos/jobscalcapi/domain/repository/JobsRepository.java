@@ -11,6 +11,6 @@ import com.glaubermatos.jobscalcapi.domain.model.Job;
 @Repository
 public interface JobsRepository extends JpaRepository<Job, Long> {
 
-	public Optional<Job> findByName(String name);
+	public Optional<Job> findByNameAndProfileId(String name, Long profileId);
 	public List<Job> findByProfileId(Long profileId);
 }
