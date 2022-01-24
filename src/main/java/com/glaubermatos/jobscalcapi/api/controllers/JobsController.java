@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.glaubermatos.jobscalcapi.api.assembler.JobAssembler;
 import com.glaubermatos.jobscalcapi.api.assembler.JobDisassembler;
 import com.glaubermatos.jobscalcapi.api.domain.model.JobModel;
+import com.glaubermatos.jobscalcapi.api.domain.model.JobModelWrapper;
 import com.glaubermatos.jobscalcapi.api.domain.model.input.JobInput;
 import com.glaubermatos.jobscalcapi.domain.exceptions.JobNameAlreadyRegisteredException;
 import com.glaubermatos.jobscalcapi.domain.model.Job;
+import com.glaubermatos.jobscalcapi.domain.model.JobStatus;
 import com.glaubermatos.jobscalcapi.domain.model.Profile;
 import com.glaubermatos.jobscalcapi.domain.service.RegisterJobService;
 import com.glaubermatos.jobscalcapi.domain.service.RegisterProfileService;
@@ -56,9 +58,30 @@ public class JobsController {
 	}
 	
 	@GetMapping
-	public List<JobModel> index(@PathVariable Long profileId) {
+	public JobModelWrapper index(@PathVariable Long profileId) {
 		Profile profile = registerProfileService.findByIdOrError(profileId);
-		return jobAssembler.toCollectionModel(profile.getJobs());
+		
+		List<Job> jobs = profile.getJobs();
+		
+		Integer totalProjects = jobs.size();
+		
+		Integer totalJobsInProgress = jobs.stream()
+				.filter(job -> job.getStatus() == JobStatus.INPROGRESS)
+				.toList()
+				.size();
+		
+		Integer totalProjectsClosed = jobs.stream()
+				.filter(job -> job.getStatus() == JobStatus.CLOSED)
+				.toList()
+				.size();		
+		
+		JobModelWrapper jobWrapper = new JobModelWrapper();
+		jobWrapper.setTotalProjects(totalProjects);
+		jobWrapper.setTotalProjectsInProgress(totalJobsInProgress);
+		jobWrapper.setTotalProjectsClosed(totalProjectsClosed);
+		jobWrapper.setJobs(jobAssembler.toCollectionModel(profile.getJobs()));
+		
+		return jobWrapper;
 	}
 	
 	@DeleteMapping("/{jobId}")

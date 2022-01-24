@@ -24,6 +24,7 @@ public class JobAssembler {
 		return jobs.stream()
 				.map(job -> toModel(job))
 				/* .map(this::toModel) */
+				/*.toList();*/
 				.collect(Collectors.toList());
 	}
 }
