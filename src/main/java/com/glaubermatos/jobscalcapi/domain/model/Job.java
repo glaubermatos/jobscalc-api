@@ -1,6 +1,7 @@
 package com.glaubermatos.jobscalcapi.domain.model;
 
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -12,7 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -22,15 +25,18 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(unique = true)
+	@Column
 	private String name;	
 	private Integer workingHoursPerDay;	
 	private Integer hoursEstimate;	
 	private Integer projectValue;
+	private OffsetDateTime dateProjectStart;
 	private OffsetDateTime createdAt;
 	private OffsetDateTime closedAt;
 	@Enumerated(EnumType.STRING)
 	private JobStatus status;
+	@Transient
+	private String deadline;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, updatable = false)
@@ -95,11 +101,52 @@ public class Job {
 	}
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}	
+	public OffsetDateTime getProjectStart() {
+		return dateProjectStart;
+	}
+	public void setProjectStart(OffsetDateTime projectStart) {
+		this.dateProjectStart = projectStart;
+	}
+	public String getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+	}
+
+	@PostLoad
+	public void calcDeadline() {
+		Integer workingHoursPerDay = profile.getWorkingHoursPerDay()*100;
+		Integer hoursEstimateToClosedProject = hoursEstimate*100;
+		
+		Integer daysEstimateToClosedProject = hoursEstimateToClosedProject / workingHoursPerDay;
+		
+		StringBuilder deadlineBuilder = new StringBuilder();
+		
+		if (status.equals(JobStatus.INPROGRESS)) {
+			OffsetDateTime currentDate = OffsetDateTime.now();
+			OffsetDateTime dateProjectStart = this.dateProjectStart;
+			
+			Integer daysOfProjectStart = (int) dateProjectStart.until(currentDate, ChronoUnit.DAYS);
+			
+			deadlineBuilder.append(daysEstimateToClosedProject - daysOfProjectStart);
+			deadlineBuilder.append(" dias para entrega");
+			
+			setDeadline(deadlineBuilder.toString());
+			
+		} else if (status.equals(JobStatus.NOTSTARTED)) {
+			deadlineBuilder.append(daysEstimateToClosedProject);
+			deadlineBuilder.append(" dias");
+			
+			setDeadline(deadlineBuilder.toString());
+		}
 	}
 
 	public void changeStatusToInProgress() {
 		if (status.equals(JobStatus.NOTSTARTED)) {
 			setStatus(JobStatus.INPROGRESS);
+			setProjectStart(OffsetDateTime.now());
 		}
 	}
 	

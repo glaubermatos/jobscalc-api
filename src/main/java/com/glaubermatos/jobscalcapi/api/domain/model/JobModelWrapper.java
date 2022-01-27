@@ -7,7 +7,7 @@ public class JobModelWrapper {
 	private Integer totalProjects;
 	private Integer totalProjectsInProgress;
 	private Integer totalProjectsClosed;
-	private List<JobModel> jobs;
+	private List<SimpleJobRepresentation> jobs;
 	
 	public Integer getTotalProjects() {
 		return totalProjects;
@@ -27,10 +27,10 @@ public class JobModelWrapper {
 	public void setTotalProjectsClosed(Integer totalProjectsClosed) {
 		this.totalProjectsClosed = totalProjectsClosed;
 	}
-	public List<JobModel> getJobs() {
+	public List<SimpleJobRepresentation> getJobs() {
 		return jobs;
 	}
-	public void setJobs(List<JobModel> jobs) {
+	public void setJobs(List<SimpleJobRepresentation> jobs) {
 		this.jobs = jobs;
 	}
 }

@@ -13,8 +13,9 @@ public class JobModel {
 	private Integer workingHoursPerDay;	
 	private Integer hoursEstimate;	
 	private Integer projectValue;
+	private OffsetDateTime dateProjectStart;
+	private String deadline;
 	private OffsetDateTime createdAt;	
-	@JsonInclude(value = Include.NON_NULL)
 	private OffsetDateTime closedAt;
 	private JobStatus status;
 	
@@ -47,6 +48,18 @@ public class JobModel {
 	}
 	public void setProjectValue(Integer projectValue) {
 		this.projectValue = projectValue;
+	}
+	public OffsetDateTime getDateProjectStart() {
+		return dateProjectStart;
+	}
+	public void setDateProjectStart(OffsetDateTime dateProjectStart) {
+		this.dateProjectStart = dateProjectStart;
+	}
+	public String getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
 	}
 	public OffsetDateTime getCreatedAt() {
 		return createdAt;
