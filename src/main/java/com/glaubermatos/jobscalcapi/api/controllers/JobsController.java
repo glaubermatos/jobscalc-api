@@ -30,7 +30,7 @@ import com.glaubermatos.jobscalcapi.domain.service.RegisterJobService;
 import com.glaubermatos.jobscalcapi.domain.service.RegisterProfileService;
 
 @RestController
-@RequestMapping("/api/profile/{profileId}/jobs")
+@RequestMapping("/api/profiles/{profileId}/jobs")
 public class JobsController {
 	
 	@Autowired

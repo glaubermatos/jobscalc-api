@@ -33,4 +33,10 @@ public class RegisterProfileService {
 				.orElseThrow(() -> new EntityNotFoundException(String
 						.format("Perfil de código %d não encontrado", id)));
 	}
+	
+	public Profile findByEmailOrError(String email) {
+		return profileRepository.findByEmail(email)
+				.orElseThrow(() -> new EntityNotFoundException(String
+						.format("Não existe perfil cadastrado com o email %s", email)));
+	}
 }
