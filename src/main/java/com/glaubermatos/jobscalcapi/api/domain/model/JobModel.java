@@ -2,8 +2,6 @@ package com.glaubermatos.jobscalcapi.api.domain.model;
 
 import java.time.OffsetDateTime;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.glaubermatos.jobscalcapi.domain.model.JobStatus;
 
 public class JobModel {

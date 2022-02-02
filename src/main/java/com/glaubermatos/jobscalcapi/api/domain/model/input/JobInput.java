@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.glaubermatos.jobscalcapi.domain.model.JobStatus;
+
 public class JobInput {
 
 	@NotBlank
@@ -23,6 +25,8 @@ public class JobInput {
 	@NotNull
 	@Positive
 	private Integer projectValue;
+	
+	private JobStatus status = JobStatus.NOTSTARTED;
 
 	public String getName() {
 		return name;
@@ -54,6 +58,14 @@ public class JobInput {
 
 	public void setProjectValue(Integer projectValue) {
 		this.projectValue = projectValue;
+	}
+
+	public JobStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(JobStatus status) {
+		this.status = status;
 	}
 	
 }
