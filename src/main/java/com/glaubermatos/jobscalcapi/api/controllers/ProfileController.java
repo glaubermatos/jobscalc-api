@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -42,6 +43,16 @@ public class ProfileController {
 	@GetMapping("/{email}")
 	public ProfileModel show(@PathVariable String email) {
 		return profileAssembler.toModel(registerProfileService.findByEmailOrError(email)) ;
+	}
+	
+	@PutMapping("/{profileId}")
+	@ResponseStatus(HttpStatus.OK)
+	public ProfileModel update(@PathVariable Long profileId, @RequestBody ProfileInput profileInput) {
+		Profile profileToUpdate = registerProfileService.findByIdOrError(profileId);
+		
+		profileDisassembler.copyToDomainObject(profileInput, profileToUpdate);
+		
+		return profileAssembler.toModel(registerProfileService.save(profileToUpdate));
 	}
 
 }
