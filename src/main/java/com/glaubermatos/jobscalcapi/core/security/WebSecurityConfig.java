@@ -10,9 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -38,16 +36,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					
 		http
 			.cors()
+			
 			.and()
 				.httpBasic()
+				
 			.and()
 				.authorizeRequests()
-//					.antMatchers("/h2-console/**").permitAll()
+//					.antMatchers("/path/**").permitAll() //para end-points públicos
 					.anyRequest().authenticated()
 					
 			.and()
 				.sessionManagement()
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+					
 			.and()
 				.csrf().disable();
 	}

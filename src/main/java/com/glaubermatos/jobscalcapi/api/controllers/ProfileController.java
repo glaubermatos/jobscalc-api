@@ -47,7 +47,7 @@ public class ProfileController {
 	
 	@PutMapping("/{profileId}")
 	@ResponseStatus(HttpStatus.OK)
-	public ProfileModel update(@PathVariable Long profileId, @RequestBody ProfileInput profileInput) {
+	public ProfileModel update(@PathVariable Long profileId, @RequestBody @Valid ProfileInput profileInput) {
 		Profile profileToUpdate = registerProfileService.findByIdOrError(profileId);
 		
 		profileDisassembler.copyToDomainObject(profileInput, profileToUpdate);

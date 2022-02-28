@@ -99,7 +99,7 @@ public class JobsController {
 	
 	@PutMapping("/{jobId}")
 	@ResponseStatus(HttpStatus.OK)
-	public JobModel update(@PathVariable Long profileId, @PathVariable Long jobId, @RequestBody JobInput jobInput) {
+	public JobModel update(@PathVariable Long profileId, @PathVariable Long jobId, @RequestBody @Valid JobInput jobInput) {
 		Job jobToUpdate = registerJobService.findByIdOrError(profileId, jobId);
 		
 		try {
