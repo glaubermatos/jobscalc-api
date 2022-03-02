@@ -169,6 +169,11 @@ public class Job {
 			deadlineBuilder.append(" dias");
 
 			setDeadline(deadlineBuilder.toString());
+			
+		} else if (status.equals(JobStatus.CLOSED)) {
+			deadlineBuilder.append("Prazo encerrado");
+
+			setDeadline(deadlineBuilder.toString());
 		}
 	}
 
