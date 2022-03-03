@@ -1,6 +1,7 @@
 package com.glaubermatos.jobscalcapi.api.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -67,12 +68,12 @@ public class JobsController {
 		
 		Integer totalJobsInProgress = jobs.stream()
 				.filter(job -> job.getStatus() == JobStatus.INPROGRESS)
-				.toList()
+				.collect(Collectors.toList())
 				.size();
 		
 		Integer totalProjectsClosed = jobs.stream()
 				.filter(job -> job.getStatus() == JobStatus.CLOSED)
-				.toList()
+				.collect(Collectors.toList())
 				.size();		
 		
 		JobModelWrapper jobWrapper = new JobModelWrapper();
