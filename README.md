@@ -102,7 +102,8 @@ Neste link pode ser visualizado o resultado final do projeto: Backend + Frontend
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [AdoptOpenJDK-11](https://adoptopenjdk.net/).
-Além disto é bom ter uma IDE para auxiliar no desenvolvimento como [STS4](https://spring.io/tools)
+Além disto é bom ter uma IDE para auxiliar no desenvolvimento como [STS4](https://spring.io/tools).
+Caso queira rodar o projeto sem uma IDE para auxiliar tenha instalado o [Maven](https://maven.apache.org/).
 
 
 #### 🧭 Clonando o projeto (Backend)
@@ -111,6 +112,12 @@ Além disto é bom ter uma IDE para auxiliar no desenvolvimento como [STS4](http
 
 # Clone este repositório
 $ git clone https://github.com/glaubermatos/jobscalc-api.git
+
+# entrar na pasta do projeto back end
+cd jobscalc-api
+
+# executar o projeto com maven
+./mvnw spring-boot:run
 
 ```
 
